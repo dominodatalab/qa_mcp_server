@@ -1,187 +1,152 @@
-# Domino UAT MCP Server
+# QA MCP Server for Domino Data Science Platform
 
-This project provides a comprehensive **User Acceptance Testing (UAT) MCP Server** for Domino Data Science Platform v6.1. When combined with AI tools like Cursor, it enables intelligent assessment of platform readiness, automated testing workflows, and data-driven validation of Domino deployments.
+**Comprehensive UAT & Performance Testing via MCP Protocol**
 
-## 🎯 **Key Features**
+Transform your Domino platform validation with AI-powered testing. This MCP server exposes **32 specialized tools** that enable LLMs to perform intelligent platform assessment, automated UAT workflows, and data-driven performance analysis.
 
-- **27 UAT Functions**: Comprehensive testing coverage for all Domino Platform features
-- **Smart Resource Management**: Enhanced functions with automatic cleanup and unique naming
-- **Admin vs User Testing**: Clear separation between infrastructure and end-user validation
-- **Performance Testing**: Load, concurrency, and stress testing capabilities
-- **Intelligent Scoring**: Pass/fail thresholds with actionable recommendations
-- **LLM-Optimized**: Designed for natural language interaction and automated testing
+## 🎯 **What This Unlocks**
 
-## 🚀 **Available UAT Functions**
+**Ask your AI assistant:**
+- *"Is our Domino platform ready for production?"*
+- *"Can the system handle 50 concurrent data science jobs?"*  
+- *"Why are users experiencing authentication issues?"*
+- *"What's our baseline performance for ML model deployment?"*
 
-### **Comprehensive Suites** (Recommended)
-- `run_comprehensive_split_uat_suite()` - **Best for complete assessment**
-- `run_admin_uat_suite()` - Infrastructure and administration testing
-- `run_user_uat_suite()` - Data science workflow validation
+**Get intelligent responses with:**
+- ✅ Automated test execution across all platform features
+- 📊 Performance metrics and capacity analysis  
+- 🔍 Detailed diagnostics with actionable recommendations
+- 🚀 One-command comprehensive UAT suites
 
-### **Enhanced Smart Functions**
-- `enhanced_test_dataset_operations()` - Dataset lifecycle with auto-cleanup
-- `enhanced_test_model_operations()` - Model deployment with dummy creation
-- `enhanced_test_file_management()` - File operations with multiple types
-- `enhanced_test_advanced_job_operations()` - Job testing with hardware detection
+---
 
-### **Performance Testing**
-- `performance_test_concurrent_jobs()` - Concurrent job capacity testing
-- `performance_test_data_upload_throughput()` - Data upload performance
-- `stress_test_api()` - API load and stability testing
+## 🚀 **32 MCP Tools Available**
 
-*See `uat_test_scenarios.md` for complete function reference.*
+### **🔧 Core Job Execution (4 tools)**
+Execute and monitor jobs with MLflow integration
+```
+run_domino_job | check_domino_job_run_status | check_domino_job_run_results | open_web_browser
+```
 
-## 🔧 **How it Works**
+### **🧪 UAT Testing Suite (12 tools)**  
+Comprehensive platform feature validation
+```
+test_user_authentication | test_project_operations | test_job_execution
+test_workspace_operations | test_environment_operations | test_dataset_operations  
+test_file_management_operations | test_collaboration_features | test_model_operations
+enhanced_test_dataset_operations | enhanced_test_model_operations | enhanced_test_advanced_job_operations
+```
 
-The enhanced `domino_qa_mcp_server.py` uses the `fastmcp` library and official `python-domino` v1.4.8 library to provide comprehensive UAT capabilities. It exposes 27 functions as MCP tools that LLMs can call to:
+### **⚡ Performance Testing (5 tools)**
+Load, stress, and capacity testing
+```
+performance_test_workspaces | performance_test_jobs | stress_test_api
+performance_test_concurrent_jobs | performance_test_data_upload_throughput
+```
 
-- **Assess platform readiness** with scored results and recommendations
-- **Test user workflows** from authentication to model deployment
-- **Validate infrastructure** including hardware tiers and environments
-- **Perform load testing** with concurrent jobs and data uploads
-- **Manage resources intelligently** with automatic cleanup
+### **🎯 Comprehensive Suites (6 tools)**
+One-command complete assessments  
+```
+run_master_comprehensive_uat_suite ← ULTIMATE SUITE
+run_comprehensive_advanced_uat_suite | run_admin_uat_suite | run_user_uat_suite
+run_comprehensive_split_uat_suite | cleanup_test_resources
+```
 
-The server communicates via standard input/output with structured JSON responses containing detailed test results, scoring, and actionable recommendations.
+### **🛠️ Platform Management (5 tools)**
+Project, dataset, and resource management
+```
+create_project_if_needed | test_dataset_creation_and_upload 
+test_environment_and_hardware_operations | test_advanced_job_operations | enhanced_test_file_management
+```
+
+---
 
 ## 📋 **Setup**
 
-### Step 1: **Clone the Repository**
+### **1. Install Dependencies**
 ```bash
-git clone https://github.com/domino-field/qa_mcp_server.git
+git clone <your-repo>
 cd qa_mcp_server
-```
-
-### Step 2: **Install Dependencies**
-```bash
-# Install using uv (recommended)
 uv pip install -e .
-
-# Or using pip
-pip install -e .
 ```
 
-### Step 3: **Configure Environment**
-Create a `.env` file with your Domino credentials:
+### **2. Configure Environment**
+Create `.env` file:
 ```dotenv
 DOMINO_API_KEY='your_api_key_here'
 DOMINO_HOST='https://your-domino-instance.com'
 ```
 
-### Step 4: **Configure Cursor MCP**
-Add to your `.cursor/mcp.json`:
+### **3. Configure MCP in Cursor**
+Add to `.cursor/mcp.json`:
 ```json
-    {
-    "mcpServers": {
-        "domino_qa_server": {
-            "command": "uv",
-            "args": ["--directory", "/full/directory/path/to/qa_mcp_server", "run", "domino_qa_mcp_server.py"]
-        }
-      }
+{
+  "mcpServers": {
+    "qa_mcp_server": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/qa_mcp_server", "run", "domino_qa_mcp_server.py"]
     }
+  }
+}
 ```
 
-## 🎯 **Usage Examples**
-
-### **Complete Platform Assessment**
-```
-LLM Query: "Is our Domino platform ready for the data science team?"
-
-Function Called: run_comprehensive_split_uat_suite("oussama", "test")
-
-Response: 
-✅ Admin UAT: 75% pass rate - Infrastructure ready
-✅ User UAT: 83% pass rate - Workflows operational  
-⚠️ Recommendations: Model deployment needs attention
-```
-
-### **Performance Investigation**
-```
-LLM Query: "Can the system handle 20 concurrent data science jobs?"
-
-Function Called: performance_test_concurrent_jobs("oussama", "test", concurrent_count=20)
-
-Response:
-✅ 20 concurrent jobs completed successfully
-⏱️ Average completion time: 45 seconds
-📊 Resource utilization: 78% CPU, 65% memory
-```
-
-### **Feature-Specific Testing**
-```
-LLM Query: "Can users upload and work with large datasets?"
-
-Function Called: enhanced_test_dataset_operations("oussama", "test")
-
-Response:
-✅ Dataset creation: Working
-✅ Upload (100MB): 85MB/s throughput  
-✅ Access and management: Operational
-✅ Cleanup: Automatic removal successful
-```
-
-## 📊 **Test Categories & Scoring**
-
-### **Admin UAT** (70% pass threshold)
-- Infrastructure monitoring (25%)
-- User management (20%) 
-- System configuration (20%)
-- Resource allocation (15%)
-- Platform administration (20%)
-
-### **User UAT** (75% pass threshold)
-- Authentication workflows (20%)
-- Development environments (25%)
-- Data science workflows (25%) 
-- Collaboration features (15%)
-- Model deployment (15%)
-
-## 🔍 **Smart Enhancements**
-
-### **Automatic Resource Management**
-- **Unique naming**: Timestamp + UUID prevents conflicts
-- **Auto-cleanup**: Test resources automatically removed
-- **Error recovery**: Graceful handling of failures
-- **Resource tracking**: Comprehensive cleanup on completion
-
-### **Enhanced Testing**
-- **Multiple file types**: Python, CSV, JSON, images
-- **Hardware detection**: Automatic tier selection and validation
-- **Performance metrics**: Detailed timing and throughput analysis
-- **Comprehensive validation**: End-to-end workflow testing
-
-## ⚡ **Performance Capabilities**
-
-- **Concurrent Workspaces**: Test up to 50+ simultaneous workspace startups
-- **Parallel Jobs**: Execute 20+ concurrent compute jobs with monitoring
-- **Data Throughput**: Upload performance testing with various file sizes
-- **API Stress Testing**: High-concurrency API load testing (100+ requests/sec)
-- **Resource Monitoring**: CPU, memory, and infrastructure utilization tracking
-
-## 🤖 **LLM Integration**
-
-The server is designed for natural language interaction. LLMs can ask questions like:
-
-- *"Is the platform ready for production?"*
-- *"Why are users having authentication issues?"*
-- *"Can the system handle our expected data science workload?"*
-- *"What's the current performance baseline?"*
-
-The server responds with structured, actionable information including pass/fail status, detailed metrics, and specific recommendations.
-
-## 📚 **Documentation**
-
-- `uat_test_scenarios.md` - Complete function reference and usage patterns
-- `domino_qa_mcp_server.py` - Enhanced MCP server implementation
-- `test_updated_mcp_server.py` - Validation and testing scripts
-
-## 🔗 **Requirements**
-
-- **Python 3.8+**
-- **Domino Data Science Platform v6.1+**
-- **Valid Domino API credentials**
-- **Network access to Domino instance**
-- **Libraries**: `fastmcp`, `python-domino>=1.4.8`, `requests`, `python-dotenv`
+### **4. Start Testing**
+Ask your AI: *"Run a comprehensive UAT assessment of our Domino platform"*
 
 ---
 
-**Ready to assess your Domino platform?** Start the MCP server and ask your AI assistant to run a comprehensive UAT assessment! 
+## 💡 **Smart Capabilities**
+
+**🔄 Intelligent Resource Management**
+- Auto-generated unique names (timestamp + UUID)
+- Automatic cleanup of test resources
+- Graceful error handling and recovery
+
+**📊 Performance Insights**  
+- Concurrent job capacity testing (20+ parallel jobs)
+- Data upload throughput analysis
+- API stress testing (100+ requests/sec)
+- Resource utilization monitoring
+
+**🎯 Comprehensive Coverage**
+- Authentication workflows → Model deployment  
+- Infrastructure validation → User experience testing
+- Admin operations → Data science workflows
+- Performance baselines → Capacity planning
+
+**🤖 LLM-Optimized Responses**
+- Structured JSON with actionable insights
+- Pass/fail scoring with improvement recommendations  
+- Detailed metrics for performance analysis
+- Natural language summaries for non-technical stakeholders
+
+---
+
+## 🚀 **Example Workflows**
+
+**Platform Readiness Assessment:**
+```
+You: "Is our platform ready for 100 data scientists?"
+AI: → Runs run_master_comprehensive_uat_suite()
+Response: ✅ 85% overall readiness | ⚠️ Scale workspace resources | 📊 Baseline: 45 concurrent jobs
+```
+
+**Performance Investigation:**
+```  
+You: "Why are model deployments slow?"
+AI: → Runs enhanced_test_model_operations() + performance_test_concurrent_jobs()
+Response: 🔍 Model registry bottleneck detected | ⏱️ Avg deployment: 3.2min | 💡 Recommend compute upgrade
+```
+
+**Capacity Planning:**
+```
+You: "What's our current performance baseline?"
+AI: → Runs performance testing suite
+Response: 📊 20 concurrent jobs max | 🚀 85MB/s upload speed | 💾 65% resource utilization | 📈 Growth capacity: 40%
+```
+
+---
+
+**Ready to transform your Domino platform validation?** Install the MCP server and let AI handle your UAT workflows!
+
+**Tech Stack:** Python 3.11+ | FastMCP | python-domino v1.4.8 | Domino v6.1+ 
