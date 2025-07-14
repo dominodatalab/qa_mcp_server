@@ -1,0 +1,16 @@
+[project]
+name = "domino_qa_mcp_server"
+version = "0.2.0"
+description = "MCP servers for Domino Data Lab - perform UAT testing, and comprehensive QA validation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]>=1.6.0",
+    "fastmcp",
+    "requests",
+    "python-dotenv",
+    "dominodatalab==1.4.8",
+]
+
+[project.scripts]
+domino-qa-mcp-server = "domino_qa_mcp_server:main"
