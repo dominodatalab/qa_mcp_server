@@ -23,8 +23,8 @@ import re
 load_dotenv()
 
 # Load API key from environment variable
-domino_api_key = os.getenv("DOMINO_API_KEY")
-domino_host = os.getenv("DOMINO_HOST")
+domino_api_key = os.getenv("DOMINO_API_KEY",os.getenv("DOMINO_USER_API_KEY"))
+domino_host = os.getenv("DOMINO_HOST",os.getenv("DOMINO_API_HOST"))
 
 if not domino_api_key:
     raise ValueError("DOMINO_API_KEY environment variable not set.")
