@@ -2,7 +2,7 @@
 
 **Comprehensive UAT & Performance Testing via MCP Protocol**
 
-Transform your Domino platform validation with AI-powered testing. This MCP server exposes **32 specialized tools** that enable LLMs to perform intelligent platform assessment, automated UAT workflows, and data-driven performance analysis.
+Transform your Domino platform validation with AI-powered testing. This MCP server exposes **32 specialized tools** and **2 standardized prompts** that enable LLMs to perform intelligent platform assessment, automated UAT workflows, and data-driven performance analysis.
 
 ## 🎯 **What This Unlocks**
 
@@ -55,9 +55,60 @@ run_comprehensive_split_uat_suite | cleanup_test_resources
 ### **🛠️ Platform Management (5 tools)**
 Project, dataset, and resource management
 ```
-create_project_if_needed | test_dataset_creation_and_upload 
+create_project_if_needed | test_dataset_creation_and_upload
 test_environment_and_hardware_operations | test_advanced_job_operations | enhanced_test_file_management
 ```
+
+---
+
+## 📝 **MCP Prompts (2 Standardized Workflows)**
+
+**Prompts** are pre-configured workflows that guide the LLM through structured testing sequences. The LLM client reads credentials from `@domino_project_settings.md` and provides them as parameters.
+
+### **Prompt 1: quick_auth_test**
+```
+Purpose: Quick user authentication verification
+Parameters: user_name, project_name (from @domino_project_settings.md)
+Execution: Runs test_user_authentication tool
+Output: Authentication status report
+```
+
+### **Prompt 2: end_to_end_uat_protocol**
+```
+Purpose: Comprehensive 14-test UAT suite with strict continuous execution
+Parameters: user_name, project_name (from @domino_project_settings.md)
+Execution:
+  - Tests 1-14 (no pauses, no confirmations)
+  - Automatic cleanup after test 14
+  - Final summary table with recommendations
+Strict Rules:
+  ✓ Continuous execution (no user intervention)
+  ✓ Cleanup only after all tests complete
+  ✓ Single comprehensive report at end
+```
+
+### **Using Prompts**
+
+1. **Create Configuration File** (`domino-qa/domino_project_settings.md`):
+```markdown
+USER_NAME = "your-username"
+PROJECT_NAME = "your-project-name"
+```
+
+2. **Invoke Prompt in LLM Client**:
+```
+"Run the quick_auth_test prompt with my credentials from @domino_project_settings.md"
+```
+or
+```
+"Execute the end_to_end_uat_protocol using settings from @domino_project_settings.md"
+```
+
+The LLM client will:
+- Read `@domino_project_settings.md`
+- Extract USER_NAME and PROJECT_NAME
+- Invoke the prompt with these parameters
+- Execute the guided workflow
 
 ---
 

@@ -3313,6 +3313,300 @@ def open_web_browser(url: str) -> bool:
     except webbrowser.Error:
         return False
 
+# MCP Prompts - Standardized test workflows
+
+@mcp.prompt()
+def quick_auth_test(user_name: str, project_name: str) -> str:
+    """
+    Prompt 1: Quick User Authentication Test
+
+    The USER_NAME and PROJECT_NAME parameters are provided by the LLM client
+    (extracted from @domino_project_settings.md by the client).
+
+    This prompt executes the User Authentication MCP tool to verify platform access.
+
+    Args:
+        user_name: Domino username (provided by LLM client)
+        project_name: Domino project name (provided by LLM client)
+    """
+    return f"""# Quick User Authentication Test
+
+## Configuration
+- **User**: {user_name}
+- **Project**: {project_name}
+- **Source**: Parameters provided by LLM client
+
+## Task
+
+Execute the User Authentication MCP tool with the provided credentials.
+
+**Tool**: `test_user_authentication`
+
+**Parameters**:
+- user_name: "{user_name}"
+- project_name: "{project_name}"
+
+## Expected Actions
+
+1. Verify user authentication
+2. Check project access permissions
+3. List existing runs in the project
+4. Confirm project setup status
+
+## Report Results
+
+Present results in this format:
+
+```
+✓ Authentication Test Results
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Status: [PASSED/FAILED]
+User: {user_name}
+Project: {project_name}
+Runs Found: [count]
+Authentication: [successful/failed]
+Message: [detailed message]
+```
+
+Execute the test now and report the results.
+"""
+
+@mcp.prompt()
+def end_to_end_uat_protocol(user_name: str, project_name: str) -> str:
+    """
+    Prompt 2: End-to-End UAT Protocol with Strict Execution
+
+    The USER_NAME and PROJECT_NAME parameters are provided by the LLM client
+    (extracted from @domino_project_settings.md by the client).
+
+    Executes comprehensive UAT with 14 sequential tests, automatic cleanup, and final reporting.
+
+    Args:
+        user_name: Domino username (provided by LLM client)
+        project_name: Domino project name (provided by LLM client)
+    """
+    return f"""# End-to-End UAT Protocol - Strict Execution Mode
+
+## Configuration
+- **User**: {user_name}
+- **Project**: {project_name}
+- **Source**: Parameters provided by LLM client
+- **Execution Mode**: Continuous (No Pauses)
+
+## STRICT EXECUTION REQUIREMENTS
+
+⚠️ **CRITICAL RULES:**
+
+1. **Continuous Run**: Execute all 14 tests in exact sequence
+2. **No Pauses**: Do NOT stop, ask for confirmation, or wait for input between tests
+3. **Cleanup After**: Run cleanup operations ONLY after test 14 completes
+4. **Final Report**: Provide summary table AFTER cleanup finishes
+
+## Test Execution Sequence (14 Tests)
+
+Execute these MCP tools in exact order:
+
+### Phase 1: Core Functionality (Tests 1-4)
+
+**Test 1: User Authentication**
+```
+Tool: test_user_authentication
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 2: Project Operations**
+```
+Tool: test_project_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 3: Job Execution**
+```
+Tool: test_job_execution
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 4: Workspace Operations**
+```
+Tool: test_workspace_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+### Phase 2: Data & Environment (Tests 5-7)
+
+**Test 5: Environment Operations**
+```
+Tool: test_environment_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 6: Dataset Operations**
+```
+Tool: test_dataset_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 7: Enhanced Dataset Operations**
+```
+Tool: enhanced_test_dataset_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+### Phase 3: Advanced Features (Tests 8-10)
+
+**Test 8: File Management**
+```
+Tool: test_file_management_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 9: Collaboration Features**
+```
+Tool: test_collaboration_features
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 10: Model Operations**
+```
+Tool: test_model_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+### Phase 4: Enhanced Testing (Tests 11-12)
+
+**Test 11: Enhanced Model Operations**
+```
+Tool: enhanced_test_model_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 12: Enhanced Advanced Job Operations**
+```
+Tool: enhanced_test_advanced_job_operations
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+### Phase 5: Comprehensive Suites (Tests 13-14)
+
+**Test 13: Admin UAT Suite**
+```
+Tool: run_admin_uat_suite
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+**Test 14: User UAT Suite**
+```
+Tool: run_user_uat_suite
+Parameters: user_name="{user_name}", project_name="{project_name}"
+```
+
+## Cleanup Phase (Execute AFTER Test 14)
+
+**Cleanup Operation**:
+```
+Tool: cleanup_test_resources
+Parameters: user_name="{user_name}", project_prefix="uat", dataset_prefix="uat-test"
+```
+
+This automatically cleans up:
+- Test workspaces
+- Test datasets
+- Test tags
+- Test artifacts
+
+## Final Report Format (After Cleanup)
+
+Generate comprehensive report:
+
+```markdown
+# End-to-End UAT Protocol - Final Report
+
+**User**: {user_name}
+**Project**: {project_name}
+**Execution Date**: [timestamp]
+
+## Test Execution Summary
+
+| # | Test Name                         | Status | Duration | Key Result           |
+|---|-----------------------------------|--------|----------|----------------------|
+| 1 | User Authentication               |        |          |                      |
+| 2 | Project Operations                |        |          |                      |
+| 3 | Job Execution                     |        |          |                      |
+| 4 | Workspace Operations              |        |          |                      |
+| 5 | Environment Operations            |        |          |                      |
+| 6 | Dataset Operations                |        |          |                      |
+| 7 | Enhanced Dataset Operations       |        |          |                      |
+| 8 | File Management                   |        |          |                      |
+| 9 | Collaboration Features            |        |          |                      |
+| 10| Model Operations                  |        |          |                      |
+| 11| Enhanced Model Operations         |        |          |                      |
+| 12| Enhanced Job Operations           |        |          |                      |
+| 13| Admin UAT Suite                   |        |          |                      |
+| 14| User UAT Suite                    |        |          |                      |
+
+## Cleanup Results
+
+| Operation                | Status | Items Cleaned |
+|--------------------------|--------|---------------|
+| Test Datasets Removed    |        |               |
+| Test Tags Removed        |        |               |
+| Test Artifacts Cleared   |        |               |
+
+## Overall Statistics
+
+- **Total Tests**: 14
+- **Passed**: [count]
+- **Failed**: [count]
+- **Success Rate**: [percentage]%
+- **Total Execution Time**: [duration]
+- **Resources Cleaned**: [count]
+- **Platform Status**: [READY FOR PRODUCTION / NEEDS ATTENTION / CRITICAL ISSUES]
+
+## Key Findings
+
+1. [Important finding 1]
+2. [Important finding 2]
+3. [Important finding 3]
+
+## Recommendations
+
+1. [Recommendation 1]
+2. [Recommendation 2]
+3. [Recommendation 3]
+```
+
+## Execution Instructions
+
+**Execute in this order:**
+
+1. Test 1 → continue immediately
+2. Test 2 → continue immediately
+3. Test 3 → continue immediately
+4. Test 4 → continue immediately
+5. Test 5 → continue immediately
+6. Test 6 → continue immediately
+7. Test 7 → continue immediately
+8. Test 8 → continue immediately
+9. Test 9 → continue immediately
+10. Test 10 → continue immediately
+11. Test 11 → continue immediately
+12. Test 12 → continue immediately
+13. Test 13 → continue immediately
+14. Test 14 → continue immediately
+15. Cleanup → continue
+16. Generate final report
+
+**Rules:**
+- Do NOT display detailed results after each test
+- Do NOT ask for confirmation between tests
+- DO show brief progress: "Test 3/14 complete..."
+- If test fails: record it and CONTINUE
+- Always complete all 14 tests + cleanup
+- Generate report at the end
+
+**Begin execution immediately - no confirmation needed.**
+"""
+
 def main():
     """Initializes and runs the Domino QA MCP server."""
     mcp.run(transport='stdio')
