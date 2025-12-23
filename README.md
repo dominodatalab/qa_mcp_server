@@ -65,27 +65,67 @@ test_environment_and_hardware_operations | test_advanced_job_operations | enhanc
 
 **Prompts** are pre-configured workflows that guide the LLM through structured testing sequences. The LLM client reads credentials from `@domino_project_settings.md` and provides them as parameters.
 
-### **Prompt 1: quick_auth_test**
-```
-Purpose: Quick user authentication verification
-Parameters: user_name, project_name (from @domino_project_settings.md)
-Execution: Runs test_user_authentication tool
-Output: Authentication status report
-```
+### **Prompt 1: `quick_auth_test`**
 
-### **Prompt 2: end_to_end_uat_protocol**
-```
-Purpose: Comprehensive 14-test UAT suite with strict continuous execution
-Parameters: user_name, project_name (from @domino_project_settings.md)
-Execution:
-  - Tests 1-14 (no pauses, no confirmations)
-  - Automatic cleanup after test 14
-  - Final summary table with recommendations
-Strict Rules:
-  ✓ Continuous execution (no user intervention)
-  ✓ Cleanup only after all tests complete
-  ✓ Single comprehensive report at end
-```
+**Purpose:** Quick user authentication verification
+
+**Parameters:**
+- `user_name`: Domino username (from @domino_project_settings.md)
+- `project_name`: Domino project name (from @domino_project_settings.md)
+
+**What it does:**
+1. Executes the `test_user_authentication` tool
+2. Verifies platform access with provided credentials
+3. Returns authentication status report
+
+**Typical use case:** First test to verify credentials work before running comprehensive suites
+
+---
+
+### **Prompt 2: `end_to_end_uat_protocol`**
+
+**Purpose:** Comprehensive 14-test UAT suite with strict continuous execution
+
+**Parameters:**
+- `user_name`: Domino username (from @domino_project_settings.md)
+- `project_name`: Domino project name (from @domino_project_settings.md)
+
+**Execution sequence:**
+
+**Phase 1: Core Functionality (Tests 1-4)**
+1. User Authentication (`test_user_authentication`)
+2. Project Operations (`test_project_operations`)
+3. Job Execution (`test_job_execution`)
+4. Workspace Operations (`test_workspace_operations`)
+
+**Phase 2: Data & Environment (Tests 5-7)**
+5. Environment Operations (`test_environment_operations`)
+6. Dataset Operations (`test_dataset_operations`)
+7. Enhanced Dataset Operations (`enhanced_test_dataset_operations`)
+
+**Phase 3: Advanced Features (Tests 8-10)**
+8. File Management (`test_file_management_operations`)
+9. Collaboration Features (`test_collaboration_features`)
+10. Model Operations (`test_model_operations`)
+
+**Phase 4: Enhanced Testing (Tests 11-12)**
+11. Enhanced Model Operations (`enhanced_test_model_operations`)
+12. Enhanced Advanced Job Operations (`enhanced_test_advanced_job_operations`)
+
+**Phase 5: Comprehensive Suites (Tests 13-14)**
+13. Admin UAT Suite (`run_admin_uat_suite`)
+14. User UAT Suite (`run_user_uat_suite`)
+
+**Cleanup Phase:** Executes `cleanup_test_resources` to remove all test artifacts
+
+**Final Report:** Comprehensive summary table with pass/fail status and recommendations
+
+**⚠️ Strict Execution Rules:**
+- ✅ Continuous execution (no pauses between tests)
+- ✅ No user confirmation requests during execution
+- ✅ Cleanup only after all 14 tests complete
+- ✅ Single comprehensive report at end
+- ❌ Do NOT stop or ask for input between tests
 
 ### **Using Prompts**
 

@@ -212,6 +212,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+CLAUDE.md
+example_prompt_invocation.md
+Dockerfile
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
