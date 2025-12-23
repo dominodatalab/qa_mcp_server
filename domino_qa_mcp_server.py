@@ -26,14 +26,29 @@ import re
 load_dotenv()
 
 # Load API key from environment variable
-domino_api_key = os.getenv("DOMINO_API_KEY")
-domino_host = os.getenv("DOMINO_HOST")
+domino_api_key = os.getenv("DOMINO_API_KEY",os.getenv("DOMINO_USER_API_KEY"))
+domino_host = os.getenv("DOMINO_HOST",os.getenv("DOMINO_API_HOST"))
 
 if not domino_api_key:
     raise ValueError("DOMINO_API_KEY environment variable not set.")
 
 if not domino_host:
     raise ValueError("DOMINO_HOST environment variable not set.")
+
+# Initialize the Fast MCP server
+mcp = FastMCP("domino_qa_server")
+
+def _create_domino_client(user_name: str, project_name: str) -> Domino:
+    """Create a Domino client instance for the specified project"""
+    project_path = f"{user_name}/{project_name}"
+    
+    return Domino(
+        project=project_path,
+        api_key=domino_api_key,
+        host=domino_host  # Use full URL format that works
+    )
+
+
 
 # Initialize the Fast MCP server
 mcp = FastMCP("domino_qa_server")

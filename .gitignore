@@ -216,6 +216,8 @@ CLAUDE.md
 example_prompt_invocation.md
 Dockerfile
 domino_qa_mcp_server.py.backup_20251223_150220
+client-README.md
+client-README-Domino-Workspace.md
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
