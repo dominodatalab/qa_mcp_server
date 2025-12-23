@@ -2,7 +2,7 @@
 
 **Comprehensive UAT & Performance Testing via MCP Protocol**
 
-Transform your Domino platform validation with AI-powered testing. This MCP server exposes **32 specialized tools** and **2 standardized prompts** that enable LLMs to perform intelligent platform assessment, automated UAT workflows, and data-driven performance analysis.
+Transform your Domino platform validation with AI-powered testing. This MCP server exposes **24 specialized tools** and **2 standardized prompts** that enable LLMs to perform intelligent platform assessment, automated UAT workflows, and data-driven performance analysis.
 
 ## 🎯 **What This Unlocks**
 
@@ -20,7 +20,7 @@ Transform your Domino platform validation with AI-powered testing. This MCP serv
 
 ---
 
-## 🚀 **32 MCP Tools Available**
+## 🚀 **24 MCP Tools Available**
 
 ### **🔧 Core Job Execution (4 tools)**
 Execute and monitor jobs with MLflow integration
@@ -28,35 +28,41 @@ Execute and monitor jobs with MLflow integration
 run_domino_job | check_domino_job_run_status | check_domino_job_run_results | open_web_browser
 ```
 
-### **🧪 UAT Testing Suite (12 tools)**  
-Comprehensive platform feature validation
+### **🧪 End-to-End UAT Suite (14 tools)**
+These are the 14 tests executed in the `end_to_end_uat_protocol`:
 ```
-test_user_authentication | test_project_operations | test_job_execution
-test_workspace_operations | test_environment_operations | test_dataset_operations  
-test_file_management_operations | test_collaboration_features | test_model_operations
-enhanced_test_dataset_operations | enhanced_test_model_operations | enhanced_test_advanced_job_operations
+1. test_post_upgrade_env_rebuild - Environment build validation
+2. test_file_management_operations - File operations
+3. test_file_version_reversion - File version reversion
+4. test_project_copying - Project copying
+5. test_project_forking - Project forking
+6. test_advanced_job_operations - Job operations
+7. test_job_scheduling - Job scheduling
+8. test_comprehensive_ide_workspace_suite - Workspace IDEs
+9. test_workspace_file_sync - Workspace file sync
+10. test_workspace_hardware_tiers - Hardware tiers
+11. enhanced_test_dataset_operations - Dataset operations
+12. test_model_api_publish - Model API publish
+13. test_app_publish - App publish
+14. run_admin_portal_uat_suite - Admin portal
 ```
 
-### **⚡ Performance Testing (5 tools)**
+### **⚡ Performance Testing (3 tools)**
 Load, stress, and capacity testing
 ```
-performance_test_workspaces | performance_test_jobs | stress_test_api
-performance_test_concurrent_jobs | performance_test_data_upload_throughput
+performance_test_concurrent_jobs | performance_test_data_upload_throughput | performance_test_parallel_workspaces
 ```
 
-### **🎯 Comprehensive Suites (6 tools)**
-One-command complete assessments  
+### **🧹 Cleanup Tools (2 tools)**
+Remove test resources after UAT execution
 ```
-run_master_comprehensive_uat_suite ← ULTIMATE SUITE
-run_comprehensive_advanced_uat_suite | run_admin_uat_suite | run_user_uat_suite
-run_comprehensive_split_uat_suite | cleanup_test_resources
+cleanup_all_project_workspaces | cleanup_all_project_datasets
 ```
 
-### **🛠️ Platform Management (5 tools)**
-Project, dataset, and resource management
+### **🔐 Authentication (1 tool)**
+User access verification
 ```
-create_project_if_needed | test_dataset_creation_and_upload
-test_environment_and_hardware_operations | test_advanced_job_operations | enhanced_test_file_management
+test_user_authentication
 ```
 
 ---
@@ -90,33 +96,26 @@ test_environment_and_hardware_operations | test_advanced_job_operations | enhanc
 - `user_name`: Domino username (from @domino_project_settings.md)
 - `project_name`: Domino project name (from @domino_project_settings.md)
 
-**Execution sequence:**
+**Mandatory Test Sequence (Execute in this exact order):**
 
-**Phase 1: Core Functionality (Tests 1-4)**
-1. User Authentication (`test_user_authentication`)
-2. Project Operations (`test_project_operations`)
-3. Job Execution (`test_job_execution`)
-4. Workspace Operations (`test_workspace_operations`)
+1. **test_post_upgrade_env_rebuild** - Environment build validation
+2. **test_file_management_operations** - File operations (upload, download, move, rename)
+3. **test_file_version_reversion** - File version control and reversion
+4. **test_project_copying** - Project copying functionality
+5. **test_project_forking** - Project forking functionality
+6. **test_advanced_job_operations** - Advanced job operations
+7. **test_job_scheduling** - Job scheduling workflows
+8. **test_comprehensive_ide_workspace_suite** - All workspace IDEs (Jupyter, RStudio, VSCode)
+9. **test_workspace_file_sync** - Workspace file synchronization
+10. **test_workspace_hardware_tiers** - Hardware tier validation (small-k8s, medium-k8s, large-k8s)
+11. **enhanced_test_dataset_operations** - Enhanced dataset operations
+12. **test_model_api_publish** - Model API publishing
+13. **test_app_publish** - Application publishing
+14. **run_admin_portal_uat_suite** - Admin portal comprehensive validation
 
-**Phase 2: Data & Environment (Tests 5-7)**
-5. Environment Operations (`test_environment_operations`)
-6. Dataset Operations (`test_dataset_operations`)
-7. Enhanced Dataset Operations (`enhanced_test_dataset_operations`)
-
-**Phase 3: Advanced Features (Tests 8-10)**
-8. File Management (`test_file_management_operations`)
-9. Collaboration Features (`test_collaboration_features`)
-10. Model Operations (`test_model_operations`)
-
-**Phase 4: Enhanced Testing (Tests 11-12)**
-11. Enhanced Model Operations (`enhanced_test_model_operations`)
-12. Enhanced Advanced Job Operations (`enhanced_test_advanced_job_operations`)
-
-**Phase 5: Comprehensive Suites (Tests 13-14)**
-13. Admin UAT Suite (`run_admin_uat_suite`)
-14. User UAT Suite (`run_user_uat_suite`)
-
-**Cleanup Phase:** Executes `cleanup_test_resources` to remove all test artifacts
+**Cleanup Phase (Executes after Test 14):**
+- `cleanup_all_project_workspaces` - Removes all test workspaces
+- `cleanup_all_project_datasets` - Removes all test datasets
 
 **Final Report:** Comprehensive summary table with pass/fail status and recommendations
 
